@@ -1,0 +1,105 @@
+<doctype html>
+    <title> remover_retalhista </title>
+
+    <body style = "padding:50px">
+        
+        <style>
+            :root {
+                --background_color: rgb(224, 143, 67);
+                --primary_color: rgb(212, 163, 115);
+                --secondary_color: rgb(233, 237, 201);
+                --tertiary_color: rgb(254, 250, 224);
+                --header_font_color: rgb(239, 239, 238);
+                --text_font_color: black;
+            }
+
+            body {
+                height: 200%;
+                background-image: url(https://asia-dynamics.com/wp-content/uploads/2019/09/slider-vmachine.png);
+                background-position: right 50px bottom;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-color: var(--background_color);
+            }
+            
+            /* Header1 style. */
+            h1 {
+                margin-top: 40px;
+                font-size: 40px;
+                font-family: Arial, Helvetica, sans-serif;
+                color: var(--text_font_color);
+            }
+            
+
+            div {
+                margin-top: center;
+                border-radius: 5px;
+                background-color: var(--secondary_color);
+                padding: 20px;
+            }
+
+            input[type="text"] {
+                width: 100%;
+                background-color: rgb(204, 213, 174);
+                color: var(--text_font_color);
+                padding: 14px 20px;
+                margin-top: 10px ;
+                margin-bottom: 30px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            input[type = submit], input[type = button] {
+                width: 70px;
+                margin-right: 15px;
+            }
+
+            input[type = submit]:hover, input[type = button]:hover  {
+                background-color: rgb(204, 197, 197);
+                cursor: pointer;
+            }
+
+            label {
+                text-align: left;
+                font-size: 20px;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+
+            select {
+                width: 100%;
+                background-color: rgb(204, 213, 174);
+                color: var(--text_font_color);
+                padding: 14px 20px;
+                margin-top: 10px ;
+                margin-bottom: 30px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            
+        </style>
+
+        <div id="form">
+            <h1> Insira os dados do Retalhista que quer remover </h1>
+
+            <form action="remove" method="post">
+                
+                <label> TIN do Retalhista </label>
+                <select name="tin">
+                    <option value=""> Selecione o TIN do Retalhista a remover </option>
+                    {% for record in cursor %}
+                        <option value="{{ record[0] }}"> {{ record[0] }} ({{ record[1] }}) </option>
+                    {% endfor %}
+                </select>
+                
+                <!-- matbe try 'onclick="remove_retailer(cursor, params.get('tin'))"' ? -->
+                <input type="submit" value="Remover"/>
+                <!-- Creates a button to go back to the last page. -->
+                <input type="button" onclick="window.history.back()" value="Cancelar"/>
+
+            </form>
+        </div>
+
+    </body>
+</doctype>

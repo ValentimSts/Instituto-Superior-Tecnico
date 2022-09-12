@@ -1,0 +1,119 @@
+<doctype html>
+    <title> categorias </title>
+
+    <body style = "padding:50px">
+        
+        <style>
+            :root {
+                --background_color: rgb(224, 143, 67);
+                --primary_color: rgb(212, 163, 115);
+                --secondary_color: rgb(233, 237, 201);
+                --tertiary_color: rgb(254, 250, 224);
+                --tr_hover_color: rgb(220, 222, 203);
+                --button_hover_color: rgb(184, 141, 98);
+                --header_font_color: rgb(239, 239, 238);
+                --text_font_color: black;
+                --link_font_color: rgb(65, 65, 212);
+            }
+
+            body {
+                height: 200%;
+                background-image: url(https://asia-dynamics.com/wp-content/uploads/2019/09/slider-vmachine.png);
+                background-position: right 50px bottom;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-color: var(--background_color);
+            }
+            
+            h1 {
+                margin-top: 85px;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 50px;
+                color: var(--header_font_color);
+            }
+            
+            a:link, a:visited ,a:hover, a:active {
+                margin-right: 20px;
+                text-decoration: none;
+                color: var(--link_font_color);
+                cursor: pointer;
+            }
+
+            button {
+                margin-left: auto; 
+                margin-right: auto;
+                background-color: var(--primary_color);
+                border: 1px solid var(--header_font_color);
+                color: var(--header_font_color);
+                padding: 12px;
+                margin-bottom: 20px;
+                margin-right: 5px;
+                text-align: center;
+                text-decoration: none;
+                font-size: 17px;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background-color: var(--button_hover_color);
+                cursor: pointer;
+            }
+
+            #Category_table {
+                font-family: Arial, Helvetica, sans-serif;
+                /* No border spacing between cells. */
+                border-collapse: collapse;
+                background-color: var(--secondary_color);
+            }
+            
+            /* Style for the table header and data cells. */
+            #Category_table th, #Category_table td {
+                width: 700px;
+                height: 50px;
+                padding: 10px;
+                border: 1px solid var(--header_font_color);
+            }
+
+            /* Style for every even table row. */
+            #Category_table tr:nth-child(even) {
+                background-color: var(--tertiary_color);
+            }
+            
+            /* Style for the table header. */
+            #Category_table th {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                text-align: left;
+                background-color: var(--primary_color);
+                color: var(--header_font_color);
+            }
+        </style>
+
+        <h1> Categorias </h1>
+
+        <div id="table">
+            <button onclick="window.location.href='menu'"> Menu principal </button>
+            <button onclick="window.location.href='categorias/inserir_categoria'"> Inserir categoria </button>
+            <button onclick="window.location.href='categorias/simples'"> Categorias simples </button>
+            <button onclick="window.location.href='categorias/super'"> Super categorias </button>
+
+            <table id="Category_table">
+                <thead>
+                    <tr>
+                        <th> Nome </th>
+                    </tr>
+                </thead>
+                
+                <!-- For loop to fetch all the system's categories. -->
+                
+                {% for record in cursor %}
+                <tr>
+                    <td> {{ record[0] }} </td>
+                </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+
+    </body>
+</doctype>

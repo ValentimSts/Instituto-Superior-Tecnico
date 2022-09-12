@@ -1,0 +1,139 @@
+<doctype html>
+    <title> categorias </title>
+
+    <body style = "padding:50px">
+        
+        <style>
+            :root {
+                --background_color: rgb(224, 143, 67);
+                --primary_color: rgb(212, 163, 115);
+                --secondary_color: rgb(233, 237, 201);
+                --tertiary_color: rgb(254, 250, 224);
+                --tr_hover_color: rgb(220, 222, 203);
+                --button_hover_color: rgb(184, 141, 98);
+                --header_font_color: rgb(239, 239, 238);
+                --text_font_color: black;
+                --link_font_color: rgb(65, 65, 212);
+            }
+
+            body {
+                height: 200%;
+                background-image: url(https://asia-dynamics.com/wp-content/uploads/2019/09/slider-vmachine.png);
+                background-position: right 50px bottom;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-color: var(--background_color);
+            }
+            
+            h1 {
+                margin-top: 85px;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 50px;
+                color: var(--header_font_color);
+            }
+
+            h3 {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 20px;
+                color: var(--header_font_color);
+            }
+            
+            a:link, a:visited ,a:hover, a:active {
+                margin-right: 20px;
+                text-decoration: none;
+                color: var(--link_font_color);
+                cursor: pointer;
+            }
+
+            button {
+                margin-left: auto; 
+                margin-right: auto;
+                background-color: var(--primary_color);
+                border: 1px solid var(--header_font_color);
+                color: var(--header_font_color);
+                padding: 12px;
+                margin-bottom: 20px;
+                margin-right: 5px;
+                text-align: center;
+                text-decoration: none;
+                font-size: 17px;
+            }
+
+            button:hover {
+                background-color: var(--button_hover_color);
+                cursor: pointer;
+            }
+
+            #Event_table {
+                font-family: Arial, Helvetica, sans-serif;
+                /* No border spacing between cells. */
+                border-collapse: collapse;
+                background-color: var(--secondary_color);
+            }
+            
+            /* Style for the table header and data cells. */
+            #Event_table th, #Event_table td {
+                width: 400px;
+                height: 50px;
+                padding: 10px;
+                border: 1px solid var(--header_font_color);
+            }
+
+            /* Style for every even table row. */
+            #Event_table tr:nth-child(even) {
+                background-color: var(--tertiary_color);
+            }
+            
+            /* Style for the table header. */
+            #Event_table th {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                text-align: left;
+                background-color: var(--primary_color);
+                color: var(--header_font_color);
+            }
+        </style>
+
+        <h1> Eventos de Reposição ({{ params.get("num_serie") }}) </h1>
+
+        <div id="table">
+            <button onclick="window.location.href='../ivm'"> Menu IVMs </button>
+            <button onclick="window.location.href=insert_name()"> Unidades repostas </button>
+
+            <table id="Event_table">
+                {% if cursor.rowcount == 0 %}
+                    <h3> {{ params.get("num_serie") }}: a IVM não possui Eventos de Reposição </h3>
+                {% else %}
+                    <thead>
+                        <tr>
+                            <th> Produto - EAN </th>
+                            <th> Número da prateleira </th>
+                            <th> Instante </th>
+                            <th> Unidades substituidas </th>
+                            <th> Retalhista - TIN </th>
+                        </tr>
+                    </thead>
+                
+                    <!-- For loop to fetch all the system's events. -->
+                    {% for record in cursor %}
+                    <tr>
+                        <td> Produto: {{ record[8] }} <br> EAN: {{ record[1] }} </td>
+                        <td> {{ record[2] }} </td>
+                        <td> {{ record[5] }} </td>
+                        <td> {{ record[6] }} </td>
+                        <td> Nome: {{ record[9] }} <br> TIN: {{ record[0] }} </td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+
+            </table>
+        </div>
+
+    </body>
+</doctype>
+
+<script>
+    function insert_name() {
+        return 'eventos/unidades_repostas?num_serie={{ params.get("num_serie") }}'
+    }
+</script>

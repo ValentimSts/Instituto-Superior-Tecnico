@@ -1,0 +1,100 @@
+<doctype html>
+    <title> Main menu -  </title>
+
+    <body style = "padding:50px">
+
+        <style>
+            :root {
+                --background_color: rgb(224, 143, 67);
+                --primary_color: rgb(212, 163, 115);
+                --secondary_color: rgb(233, 237, 201);
+                --tertiary_color: rgb(254, 250, 224);
+                --tr_hover_color: rgb(220, 222, 203);
+                --button_hover_color: rgb(184, 141, 98);
+                --header_font_color: rgb(239, 239, 238);
+                --text_font_color: black;
+            }
+
+            body {
+                height: 200%;
+                background-image: url('https://i.pinimg.com/736x/2b/57/ce/2b57ce7cfed596244d33beb4fa7b9d04.jpg');
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-position: center;
+                background-color: var(--background_color);
+            }
+            
+            /* Header1 style. */
+            h1 {
+                text-align: center;
+                margin-top: 250px;
+                font-family: Arial, Helvetica, sans-serif;
+                color: var(--header_font_color);
+            }
+            
+            /* Hyperlink style. */
+            a:link, a:visited ,a:hover, a:active {
+                text-decoration: none;
+                color: var(--text_font_color);
+            }
+
+            /* Table style. */
+            table {
+                margin-left: auto; 
+                margin-right: auto;
+            }
+
+            /* Style for the table used on the main page. */
+            #IVM_table {
+                font-family: Arial, Helvetica, sans-serif;
+                /* No border spacing between cells. */
+                border-collapse: collapse;
+                background-color: var(--secondary_color);
+            }
+            
+            /* Style for the table header and data cells. */
+            #IVM_table th, #IVM_table td {
+                width: 400px;
+                height: 50px;
+                padding: 10px;
+                border: 1px solid var(--header_font_color);
+            }
+
+            /* Style for every even table row. */
+            #IVM_table tr:nth-child(even) {
+                background-color: var(--tertiary_color);
+            }
+            
+            /* Style for the the table rows when hovered. */
+            #IVM_table tr:hover {
+                background-color: var(--tr_hover_color);
+            }
+            
+            /* Style for the table header. */
+            #IVM_table th {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                text-align: left;
+                background-color: var(--primary_color);
+                color: var(--header_font_color);
+            }
+        </style>
+
+            <h1> Base de Dados - IVM </h1>
+
+            <div id="table">
+
+                <table id="IVM_table">
+                    <thead>
+                        <tr><th> Menu de gestão de IVMs </th></tr>
+                    </thead>
+    
+                    <tr><td><a href="categorias"> Categorias </a></td></tr>
+                    <tr><td><a href="retalhistas"> Retalhistas </a></td></tr>
+                    <tr><td><a href="ivm"> IVMs </a></td></tr>
+                </table>
+                
+            </div>
+            
+        </body>
+    </doctype>
