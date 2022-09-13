@@ -20,6 +20,7 @@ LEIC-A - Licenciatura em Engenharia Informática e de Computadores (Bachelors in
  - **IPM**
  - **PE**
  - **SO**
+ - **PO**
 
 ### 3º Ano (Senior Year)
 
