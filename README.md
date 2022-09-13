@@ -11,6 +11,7 @@ LEIC-A - Licenciatura em Engenharia Informática e de Computadores (Bachelors in
  - **FP**
  - **IAED**
  - **IAC**
+ - **LP**
 
 ### 2º Ano (Sophomore Year)
 
