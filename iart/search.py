@@ -1556,11 +1556,9 @@ class InstrumentedProblem(Problem):
 
 def compare_searchers(problems, header,
                       searchers=[breadth_first_tree_search,
-                                 breadth_first_graph_search,
-                                 depth_first_graph_search,
-                                 iterative_deepening_search,
-                                 depth_limited_search,
-                                 recursive_best_first_search]):
+                                 depth_first_tree_search,
+                                 astar_search,
+                                 greedy_search]):
     def do(searcher, problem):
         p = InstrumentedProblem(problem)
         searcher(p)
@@ -1570,10 +1568,6 @@ def compare_searchers(problems, header,
     print_table(table, header)
 
 
-def compare_graph_searchers():
+def compare_graph_searchers(p):
     """Prints a table of search results."""
-    compare_searchers(problems=[GraphProblem('Arad', 'Bucharest', romania_map),
-                                GraphProblem('Oradea', 'Neamt', romania_map),
-                                GraphProblem('Q', 'WA', australia_map)],
-                      header=['Searcher', 'romania_map(Arad, Bucharest)',
-                              'romania_map(Oradea, Neamt)', 'australia_map'])
+    compare_searchers(problems=[p], header=['Nome', 'Resultados'])
