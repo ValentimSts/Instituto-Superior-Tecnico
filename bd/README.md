@@ -1,2 +1,2 @@
-# bd
-Repo containing my BD (Data Bases) class project
+# BD
+Bases de Dados (Data Bases)
