@@ -12,9 +12,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <chrono>
 
-using namespace std::chrono;
 
 #define parent1 0
 #define parent2 1
@@ -36,17 +34,7 @@ void DFS_aux(int** graph, int target_node);
 
 
 int main() {
-    // Get starting timepoint
-    auto start = high_resolution_clock::now();
-
     computeInput();
-
-    // Get ending timepoint
-    auto stop = high_resolution_clock::now();
-
-    auto duration = duration_cast<microseconds>(stop - start);
-    std::cout << "Time taken: " << duration.count() << std::endl;
-
     return 0;
 }
 

@@ -92,8 +92,6 @@ int tfs_open(char const *name, int flags) {
             if (inode_unlock(inum) == -1) {
                 return -1;
             }
-
-            offset = 0;
         }
         /* Determine initial offset */
         if (flags & TFS_O_APPEND) {
@@ -211,9 +209,6 @@ ssize_t tfs_write(int fhandle, void const *buffer, size_t to_write) {
         if ((int) inode->i_curr_indir < (int) (INDIR_BLOCK_SIZE - 1)) {
             write_scraps = temp - to_write;
         }
-        else {
-            return -1;
-        }
 
         if (inode_unlock(inumber) == -1) {
             return -1;
@@ -282,10 +277,6 @@ ssize_t tfs_write(int fhandle, void const *buffer, size_t to_write) {
 
             /* We finally get the block we need to write our data */
             block = data_block_get(temp[inode->i_curr_indir]);
-            if (block == NULL) {
-                inode_unlock(inumber);
-                return -1;
-            }
 
             /* When write_scraps is greater than 0, it means we still have data
              * to write, in other words, we need an extra block to write the rest
@@ -310,10 +301,6 @@ ssize_t tfs_write(int fhandle, void const *buffer, size_t to_write) {
             }
 
             block = data_block_get(inode->i_data_blocks[inode->i_curr_block]);
-            if (block == NULL) {
-                inode_unlock(inumber);
-                return -1;
-            }
 
             /* Just like we did with the indirect block curr variable, we do the
              * same with the direct block curr variable */
@@ -337,7 +324,7 @@ ssize_t tfs_write(int fhandle, void const *buffer, size_t to_write) {
         if (of_wrlock(fhandle) == -1) {
             return -1;
         }
-        /* The offset and i-node size associated with the file handle are
+        /* The offset  and i-node size associated with the file handle are
          * incremented accordingly */
         file->of_offset += to_write;
 
@@ -573,8 +560,8 @@ int tfs_copy_to_external_fs(char const *source_path, char const *dest_path) {
         return -1;
     }
 
-    /* Perform the actual write to the file */
-    if (fwrite(buffer, sizeof(char), size, fp) != size) {
+    /* Perform the actua write to the file */
+    if (fwrite(buffer, 1, size, fp) != size) {
         return -1;
     }
     

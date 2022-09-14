@@ -30,7 +30,8 @@ int tfs_mount(char const *client_pipe_path, char const *server_pipe_path) {
     if (mkfifo(client_pipe_path, 0777) != 0) {
         return -1;
     }
-
+    
+    printf("write client\n");
     /* Opens the server's pipe for every future writing */
     server_fd = open_until_success(server_pipe_path, O_WRONLY);
     if (server_fd == -1) {
@@ -44,6 +45,7 @@ int tfs_mount(char const *client_pipe_path, char const *server_pipe_path) {
         return -1;
     }
 
+    printf("read client\n");
     /* Opens the client's pipe for every future reading (in the same session) */
     client_fd = open_until_success(client_pipe_path, O_RDONLY);
     if (client_fd == -1) {
@@ -56,8 +58,11 @@ int tfs_mount(char const *client_pipe_path, char const *server_pipe_path) {
         close_until_success(server_fd);
         close_until_success(client_fd);
         unlink(client_pipe_path);
+        printf("joao5\n");
         return -1;
     }
+
+    printf("%d\n", curr_session_id);
 
     /* In case the server sent a -1 to the client, an error ocurred on the
      * server's side, and so, we return error */
@@ -105,6 +110,7 @@ int tfs_unmount() {
         return -1;
     }
 
+    /* TODO: close the server pipe? */
     if (close_until_success(server_fd) != 0) {
         return -1;
     }
@@ -265,58 +271,6 @@ int tfs_shutdown_after_all_closed() {
         return -1;
     }
 
+    /* TODO: exit? */
     exit(1);
-}
-
-
-int tfs_number_of() {
-    size_t buffer_size = OP_CODE_SIZE + SESSION_ID_SIZE;
-
-    /* Buffer used to send shutdown_after_all_closed commands to the server
-     * - Structure:
-     *   OP_CODE | session_id */
-    char buffer[buffer_size];
-
-    buffer[0] = (char) TFS_OP_CODE_NUMBER_OF;
-    memcpy(buffer + OP_CODE_SIZE, &curr_session_id, SESSION_ID_SIZE);
-
-    if (write_until_success(server_fd, buffer, buffer_size) != 0) {
-        return -1;
-    }
-
-    int ret;
-    if (read_until_success(client_fd, &ret, RETURN_VAL_SIZE) != 0) {
-        return -1;
-    }
-
-    // dar print ig?
-    printf("number of open files: %d\n", ret);
-
-    return 0;
-}
-
-int number_commands() {
-    size_t buffer_size = OP_CODE_SIZE + SESSION_ID_SIZE;
-
-    /* Buffer used to send numer_commands commands to the server
-     * - Structure:
-     *   OP_CODE | session_id */
-    char buffer[buffer_size];
-
-    buffer[0] = (char) TFS_OP_CODE_NUMBER_COMMANDS;
-    memcpy(buffer + OP_CODE_SIZE, &curr_session_id, SESSION_ID_SIZE);
-
-    if (write_until_success(server_fd, buffer, buffer_size) != 0) {
-        return -1;
-    }
-
-    int ret;
-    if (read_until_success(client_fd, &ret, RETURN_VAL_SIZE) != 0) {
-        return -1;
-    }
-
-    // dar print ig?
-    printf("number of commands: %d\n", ret);
-
-    return 0;
 }

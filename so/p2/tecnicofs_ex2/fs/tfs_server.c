@@ -14,8 +14,6 @@ static pthread_t session_thread_table[MAX_SERVER_SESSIONS];
 /* Server global mutex */
 static pthread_mutex_t server_mutex;
 
-static int number_of_operations;
-
 
 static inline bool valid_session_id(int session_id) {
     return session_id >= 0 && session_id < MAX_SERVER_SESSIONS;
@@ -40,14 +38,11 @@ void tfs_server_init(char const *server_pipe_path) {
 
     unlink(server_pipe_path);
 
-    if (mkfifo(server_pipe_path, 0777) != 0) {
+    if (mkfifo(server_pipe_path, 0777) != 0 && errno != EEXIST) {
         pthread_mutex_destroy(&server_mutex);
         perror("[ERR]");
         exit(1);
     }
-
-    /* inicializar a 0 no server init */
-    number_of_operations = 0;
 
     for (size_t i = 0; i < MAX_SERVER_SESSIONS; i++) {
         free_session_table[i] = FREE;
@@ -465,6 +460,8 @@ void tfs_server_shutdown(void const *arg) {
      * client_fd | fhandle */
     int client_fd;
     memcpy(&client_fd, args, CLIENT_FD_SIZE);
+    int fhandle;
+    memcpy(&fhandle, args + SESSION_ID_SIZE, FHANDLE_SIZE);
 
     /* Stores the return value of tfs_destroy_after_all_closed() */
     int ret;
@@ -473,43 +470,6 @@ void tfs_server_shutdown(void const *arg) {
     /* If for some reason tfs_destroy_after_all_closed() returns -1, it won't 
      * be a problem for now, as the client will deal with it accordingly */
     if (write_until_success(client_fd, &ret, RETURN_VAL_SIZE) != 0) {
-        if (send_message(client_fd, -1) != 0) {
-            exit(1);
-        }
-        return;
-    }
-}
-
-
-void tfs_server_of_number(void const *arg) {
-    char *args = (char*) arg;
-
-    /* Gets the arguments we need for the read command:
-     * client_fd | fhandle */
-    int client_fd;
-    memcpy(&client_fd, args, CLIENT_FD_SIZE);
-
-    int ret;
-    ret = number_of_of();
-
-    if (write_until_success(client_fd, &ret, RETURN_VAL_SIZE) != 0) {
-        if (send_message(client_fd, -1) != 0) {
-            exit(1);
-        }
-        return;
-    }
-}
-
-
-void number_commands(void const *arg) {
-    char *args = (char*) arg;
-
-    /* Gets the arguments we need for the read command:
-     * client_fd | fhandle */
-    int client_fd;
-    memcpy(&client_fd, args, CLIENT_FD_SIZE);
-
-    if (write_until_success(client_fd, &number_of_operations, RETURN_VAL_SIZE) != 0) {
         if (send_message(client_fd, -1) != 0) {
             exit(1);
         }
@@ -599,7 +559,6 @@ int main(int argc, char **argv) {
             case TFS_OP_CODE_UNMOUNT:
                 session_cond_wait(client_session);
                 pthread_create(&session_thread_table[session_id], NULL, (void*)tfs_server_unmount, request_buffer+OP_CODE_SIZE);
-
                 session_cond_signal(client_session);
                 break;
             
@@ -633,31 +592,12 @@ int main(int argc, char **argv) {
                 session_cond_signal(client_session);
                 break;
 
-            case TFS_OP_CODE_NUMBER_OF:
-                pthread_create(&session_thread_table[session_id], NULL, (void*)tfs_server_of_number, request_buffer+OP_CODE_SIZE);
-
-            case TFS_OP_CODE_NUMBER_COMMANDS:
-                pthread_create(&session_thread_table[session_id], NULL, (void*)number_commands, request_buffer+OP_CODE_SIZE);
-
             default:
                 /* Esta entrega...kinda embarassing ngl, sry :c */
                 printf("Invalid OP_CODE\n");
                 break;
         }
-        if (op_code >= TFS_OP_CODE_MOUNT && op_code <= TFS_OP_CODE_NUMBER_COMMANDS) {
-            if (pthread_mutex_lock(&server_mutex) != 0) {
-                return -1;
-            }
-
-            // incrementar a variavel sempre no fim de cada funcao do server 
-            number_of_operations++;
-
-            if (pthread_mutex_unlock(&server_mutex) != 0) {
-                return -1;
-            }
-        }
     }
 
     return 0;
 }
- 

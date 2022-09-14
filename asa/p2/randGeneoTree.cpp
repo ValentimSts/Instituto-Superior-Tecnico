@@ -2,7 +2,7 @@
  * Small generator of Geneological Directed Acyclic Graphs (DAG) *
  *  - of size V and                                              *
  *  - prob p of creating the edge (u,v)                          *
- * Pedro T. Monteiro - Pedro.Tiago.Monteiro@tecnico.ulisboa.pt   *
+ * Pedro T. Monteiro                                             *
  *****************************************************************/
 #include <iostream>
 #include <vector>
