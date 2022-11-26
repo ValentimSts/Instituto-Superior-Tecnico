@@ -5,7 +5,7 @@ OC - Organização de Computadores (Computer Organization)
 
 ## Lab1
 Memory Hierarchy:
- - A project using DineroIV. Analyze the simulator's cache and determine the best setup/charachteristics for it (cache size, block size, policies, number of ways, ...).
+ - A project using DineroIV. Analyze the cache performance for a motion estimation algorithm and determine the best setup/charachteristics for it (cache size, block size, policies, number of ways, ...).
 
 ## Lab2
 System Modeling and Profiling:
