@@ -29,3 +29,7 @@ LEIC-A - Licenciatura em Engenharia Informática e de Computadores (Bachelors in
 - **OC**
 - **RC**
 - **AMS**
+- **ESOF**
+- **SD**
+- **CG**
+- **COMP**
